@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:divvyup/screens/main_screen.dart';
 import 'package:divvyup/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:divvyup/screens/routing.dart';
@@ -21,28 +22,27 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: () => MaterialApp(
-                title: 'Divvy Up',
-                theme: ThemeData(
-                  // This is the theme of your application.
-                  //
-                  // Try running your application with "flutter run". You'll see the
-                  // application has a blue toolbar. Then, without quitting the app, try
-                  // changing the primarySwatch below to Colors.green and then invoke
-                  // "hot reload" (press "r" in the console where you ran "flutter run",
-                  // or simply save your changes to "hot reload" in a Flutter IDE).
-                  // Notice that the counter didn't reset back to zero; the application
-                  // is not restarted.
-                  primarySwatch: Colors.blue,
-                ),
-                home: MyHomePage(),
-                routes: {
-                  loginsignupID: (context) {
-                    return const LoginSignupScreen();
-                  },
-                  signupID: (context) {
-                    return const Signup();
-                  },
-                }));
+              title: 'Divvy Up',
+              theme: ThemeData(
+                primarySwatch: Colors.purple,
+              ),
+              initialRoute: homepageID,
+              onGenerateRoute: (settings) {
+                var pageName = settings.name;
+                var args = settings.arguments;
+                if (pageName == loginsignupID) {
+                  return MaterialPageRoute(
+                      builder: (context) => LoginSignupScreen());
+                }
+                if (pageName == homepageID) {
+                  return MaterialPageRoute(builder: (context) => MyHomePage());
+                }
+                if (pageName == signupID)
+                  return MaterialPageRoute(builder: (context) => Signup());
+                if (pageName == mainScreenID)
+                  return MaterialPageRoute(builder: (context) => MainScreen());
+              },
+            ));
   }
 }
 
