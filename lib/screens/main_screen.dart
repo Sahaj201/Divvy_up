@@ -11,14 +11,18 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  Color homeColor = Colors.white;
+  Color splitColor = Colors.white;
+  Color profileColor = Colors.white;
+
   Map<String, double> dataMap = {
     "Flutter": 5,
     "React": 0,
     "Xamarin": 0,
     "Ionic": 0,
   };
+  TextEditingController budgetholder = TextEditingController();
   String budget = "0";
-  bool _show = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +31,15 @@ class _MainScreenState extends State<MainScreen> {
         automaticallyImplyLeading: false,
         leading: IconButton(onPressed: () {}, icon: Icon(Icons.account_circle)),
       ),
-      backgroundColor: Colors.black26,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        icon: Icon(Icons.add),
+        backgroundColor: Colors.purple,
+        focusColor: Colors.purple,
+        elevation: 0,
+        label: Text('Add Expense'),
+      ),
+      backgroundColor: Color(0xff202020),
       body: Column(
         children: [
           Container(
@@ -134,11 +146,11 @@ class _MainScreenState extends State<MainScreen> {
                   TextButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Color(0xff3A3A3A)),
+                          MaterialStateProperty.all<Color>(Colors.purple),
                     ),
                     onPressed: () {},
                     child: Text("See Detailed Summary",
-                        style: TextStyle(fontSize: 18.sp)),
+                        style: TextStyle(fontSize: 18.sp, color: Colors.white)),
                   ),
                 ],
               ),
@@ -146,12 +158,84 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
+      bottomNavigationBar: Container(
+        height: 80,
+        decoration: BoxDecoration(
+          color: Color(0xff262626),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              children: [
+                IconButton(
+                    enableFeedback: false,
+                    onPressed: () {
+                      homeColor = Colors.purple;
+                      splitColor = Colors.white;
+                      profileColor = Colors.white;
+                      setState(() {});
+                    },
+                    icon: Icon(
+                      Icons.home,
+                      color: homeColor,
+                      size: 35,
+                    )),
+                Text(
+                  "Home",
+                  style: TextStyle(color: homeColor),
+                )
+              ],
+            ),
+            Column(
+              children: [
+                IconButton(
+                    enableFeedback: false,
+                    onPressed: () {
+                      homeColor = Colors.white;
+                      splitColor = Colors.purple;
+                      profileColor = Colors.white;
+                      setState(() {});
+                    },
+                    icon: Icon(
+                      Icons.group,
+                      color: splitColor,
+                      size: 35,
+                    )),
+                Text("Split", style: TextStyle(color: splitColor))
+              ],
+            ),
+            Column(
+              children: [
+                IconButton(
+                    enableFeedback: false,
+                    onPressed: () {
+                      homeColor = Colors.white;
+                      splitColor = Colors.white;
+                      profileColor = Colors.purple;
+                      setState(() {});
+                    },
+                    icon: Icon(
+                      Icons.person,
+                      color: profileColor,
+                      size: 35,
+                    )),
+                Text("Profile", style: TextStyle(color: profileColor))
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   _showModalBottomSheet() {
     showModalBottomSheet(
-      backgroundColor: Colors.black54,
+      backgroundColor: Color(0xff202020),
       context: context,
       isScrollControlled: true,
       builder: (context) {
@@ -173,8 +257,10 @@ class _MainScreenState extends State<MainScreen> {
                       TextButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.black54)),
-                          onPressed: () {},
+                                  Color(0xff202020))),
+                          onPressed: () {
+                            budgetholder.clear();
+                          },
                           child:
                               Text("Clear", style: TextStyle(fontSize: 18.sp)))
                     ],
@@ -183,13 +269,25 @@ class _MainScreenState extends State<MainScreen> {
                     height: 20.h,
                   ),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text("₹",
-                        style: TextStyle(fontSize: 30.sp, color: Colors.white)),
-                    /*TextField(
-                        decoration: InputDecoration(
-                      hintText: budget,
-                      hintStyle: TextStyle(fontSize: 18.sp),
-                    )),*/
+                    SizedBox(
+                      width: 50.w,
+                      child: TextField(
+                          onChanged: (value) {
+                            budget = value;
+                            print(value);
+                          },
+                          keyboardType: TextInputType.number,
+                          controller: budgetholder,
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 25.sp),
+                          decoration: InputDecoration(
+                            prefixText: "₹",
+                            fillColor: Colors.white,
+                            hintText: "0",
+                            hintStyle:
+                                TextStyle(fontSize: 25.sp, color: Colors.white),
+                          )),
+                    ),
                   ]),
                   SizedBox(
                     height: 20.h,
@@ -197,20 +295,30 @@ class _MainScreenState extends State<MainScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.purple)),
-                          onPressed: () {},
-                          child: Text("Set",
-                              style: TextStyle(
-                                  fontSize: 18.sp, color: Colors.white))),
+                      SizedBox(
+                        height: 36.h,
+                        width: 126.w,
+                        child: TextButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.purple)),
+                            onPressed: () {
+                              setState(() {});
+                              Navigator.pop(context);
+                            },
+                            child: Text("Set",
+                                style: TextStyle(
+                                    fontSize: 18.sp, color: Colors.white))),
+                      ),
                       Expanded(flex: 3, child: SizedBox()),
                       TextButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.black26)),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           child: Text("Cancel",
                               style: TextStyle(
                                   fontSize: 18.sp, color: Colors.purple))),
