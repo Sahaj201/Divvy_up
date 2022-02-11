@@ -27,6 +27,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff674FC4),
         title: Text("Hello"),
         automaticallyImplyLeading: false,
         leading: IconButton(onPressed: () {}, icon: Icon(Icons.account_circle)),
@@ -34,8 +35,8 @@ class _MainScreenState extends State<MainScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
         icon: Icon(Icons.add),
-        backgroundColor: Colors.purple,
-        focusColor: Colors.purple,
+        backgroundColor: Color(0xff674FC4),
+        focusColor: Color(0xff674FC4),
         elevation: 0,
         label: Text('Add Expense'),
       ),
@@ -107,7 +108,7 @@ class _MainScreenState extends State<MainScreen> {
                           Colors.black,
                           Colors.yellow,
                           Colors.red,
-                          Colors.purple
+                          Color(0xff674FC4)
                         ],
 
                         initialAngleInDegree: 0,
@@ -146,7 +147,7 @@ class _MainScreenState extends State<MainScreen> {
                   TextButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.purple),
+                          MaterialStateProperty.all<Color>(Color(0xff674FC4)),
                     ),
                     onPressed: () {},
                     child: Text("See Detailed Summary",
@@ -175,7 +176,7 @@ class _MainScreenState extends State<MainScreen> {
                 IconButton(
                     enableFeedback: false,
                     onPressed: () {
-                      homeColor = Colors.purple;
+                      homeColor = Color(0xff674FC4);
                       splitColor = Colors.white;
                       profileColor = Colors.white;
                       setState(() {});
@@ -197,7 +198,7 @@ class _MainScreenState extends State<MainScreen> {
                     enableFeedback: false,
                     onPressed: () {
                       homeColor = Colors.white;
-                      splitColor = Colors.purple;
+                      splitColor = Color(0xff674FC4);
                       profileColor = Colors.white;
                       setState(() {});
                     },
@@ -216,7 +217,7 @@ class _MainScreenState extends State<MainScreen> {
                     onPressed: () {
                       homeColor = Colors.white;
                       splitColor = Colors.white;
-                      profileColor = Colors.purple;
+                      profileColor = Color(0xff674FC4);
                       setState(() {});
                     },
                     icon: Icon(
@@ -302,7 +303,7 @@ class _MainScreenState extends State<MainScreen> {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Colors.purple)),
+                                        Color(0xff674FC4))),
                             onPressed: () {
                               setState(() {});
                               Navigator.pop(context);
@@ -321,7 +322,7 @@ class _MainScreenState extends State<MainScreen> {
                           },
                           child: Text("Cancel",
                               style: TextStyle(
-                                  fontSize: 18.sp, color: Colors.purple))),
+                                  fontSize: 18.sp, color: Color(0xff674FC4)))),
                     ],
                   )
                 ],
