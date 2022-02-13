@@ -16,7 +16,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Container(color: Color(0xff674FC4)),
+          Container(color: Colors.purple),
           Column(children: [
             SizedBox(
               height: 58.h,
@@ -51,7 +51,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, mainScreenID);
+                      Navigator.pushNamed(context, homeScreenID);
                     },
                     style: ButtonStyle(
                         backgroundColor:

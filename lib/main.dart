@@ -1,13 +1,19 @@
 import 'dart:async';
 
-import 'package:divvyup/screens/main_screen.dart';
+import 'package:divvyup/expense_data.dart';
+import 'package:divvyup/screens/homepage.dart';
+import 'package:divvyup/screens/new_expense_screen.dart';
 import 'package:divvyup/screens/signup.dart';
+import 'package:divvyup/sqlite.dart';
 import 'package:flutter/material.dart';
 import 'package:divvyup/screens/routing.dart';
 import 'package:divvyup/screens/login_signup_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SqliteDB.initDb();
   runApp(MaterialApp(home: MyApp()));
 }
 
@@ -17,41 +23,48 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-        designSize: Size(360, 640),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: () => MaterialApp(
-              title: 'Divvy Up',
-              theme: ThemeData(
-                primarySwatch: Colors.purple,
-              ),
-              initialRoute: homepageID,
-              onGenerateRoute: (settings) {
-                var pageName = settings.name;
-                var args = settings.arguments;
-                if (pageName == loginsignupID) {
-                  return MaterialPageRoute(
-                      builder: (context) => LoginSignupScreen());
-                }
-                if (pageName == homepageID) {
-                  return MaterialPageRoute(builder: (context) => MyHomePage());
-                }
-                if (pageName == signupID)
-                  return MaterialPageRoute(builder: (context) => Signup());
-                if (pageName == mainScreenID)
-                  return MaterialPageRoute(builder: (context) => MainScreen());
-              },
-            ));
+    return ChangeNotifierProvider(
+        create: (context) => ExpenseData(),
+        child: ScreenUtilInit(
+            designSize: Size(360, 640),
+            minTextAdapt: true,
+            splitScreenMode: true,
+            builder: () => MaterialApp(
+                  title: 'Divvy Up',
+                  theme: ThemeData(
+                    primarySwatch: Colors.purple,
+                  ),
+                  initialRoute: splashscreenID,
+                  onGenerateRoute: (settings) {
+                    var pageName = settings.name;
+                    var args = settings.arguments;
+                    if (pageName == loginsignupID) {
+                      return MaterialPageRoute(
+                          builder: (context) => LoginSignupScreen());
+                    }
+                    if (pageName == splashscreenID) {
+                      return MaterialPageRoute(
+                          builder: (context) => SplashScreen());
+                    }
+                    if (pageName == signupID)
+                      return MaterialPageRoute(builder: (context) => Signup());
+                    if (pageName == homeScreenID)
+                      return MaterialPageRoute(
+                          builder: (context) => HomePage());
+                    if (pageName == newexpenseScreenID)
+                      return MaterialPageRoute(
+                          builder: (context) => NewExpenseScreen());
+                  },
+                )));
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
@@ -62,9 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Color(0xff674FC4),
+        color: Color(0xffA407A4),
         child: Image.asset(
-          'assets/images/SplashScreenlogo.png',
+          'assets/images/SplashScreenLogo.png',
         ));
   }
 }
