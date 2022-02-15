@@ -39,6 +39,9 @@ dependencies:
   bottom_navy_bar:
   sqflite:
   provider:
+  firebase_core:
+  firebase_auth:
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:

@@ -17,7 +17,8 @@ class SqliteDB {
     await db.execute('CREATE TABLE EXPENSE (expenseID INTEGER PRIMARY KEY, '
         'expenseName TEXT, '
         'category INTEGER, '
-        'expenses INTEGER)');
+        'expenses INTEGER,'
+        'friends INTEGER)');
   }
 
   /// Initialize DB

@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'expense.dart';
 
 class ExpenseData extends ChangeNotifier {
-  bool isDataLoaded = false;
   Map<String, double> dataMap = {
     "Food": 0,
     "Shopping": 0,
@@ -31,7 +30,6 @@ class ExpenseData extends ChangeNotifier {
       } else {
         dataMap["Others"] = (dataMap["Others"]! + i.expense);
       }
-      isDataLoaded = true;
       notifyListeners();
     }
   }

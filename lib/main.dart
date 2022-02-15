@@ -4,7 +4,9 @@ import 'package:divvyup/expense_data.dart';
 import 'package:divvyup/screens/homepage.dart';
 import 'package:divvyup/screens/new_expense_screen.dart';
 import 'package:divvyup/screens/signup.dart';
+import 'package:divvyup/screens/splitscreen.dart';
 import 'package:divvyup/sqlite.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:divvyup/screens/routing.dart';
 import 'package:divvyup/screens/login_signup_screen.dart';
@@ -13,6 +15,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await SqliteDB.initDb();
   runApp(MaterialApp(home: MyApp()));
 }
@@ -54,6 +57,12 @@ class MyApp extends StatelessWidget {
                     if (pageName == newexpenseScreenID)
                       return MaterialPageRoute(
                           builder: (context) => NewExpenseScreen());
+                    if (pageName == splitexpenseScreenID)
+                      return MaterialPageRoute(
+                          builder: (context) => SplitScreen());
+                    if (pageName == splitexpenseScreenID)
+                      return MaterialPageRoute(
+                          builder: (context) => SplitScreen());
                   },
                 )));
   }

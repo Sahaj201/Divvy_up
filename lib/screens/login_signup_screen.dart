@@ -17,13 +17,11 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       body: Stack(
         children: [
           Container(color: Colors.purple),
-          Column(children: [
-            SizedBox(
-              height: 58.h,
-            ),
-            /*Image.asset('assets/images/img1.png'),
+          Container(width: 180.w, child: Image.asset('assets/images/logo.png')),
+
+          /*Image.asset('assets/images/img1.png'),
             Container(child: Text("Are you ok"), color: Colors.white)*/
-          ]),
+
           Container(
             color: Colors.black,
             margin: EdgeInsets.fromLTRB(0, 138.h, 0, 0),

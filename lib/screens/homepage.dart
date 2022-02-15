@@ -23,6 +23,9 @@ class _HomePageState extends State<HomePage> {
 
   TextEditingController budgetholder = TextEditingController();
   String budget = "0";
+  void seedetailedSummary() {
+    Navigator.pushNamed(context, seedetailedSummaryID);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,141 +50,131 @@ class _HomePageState extends State<HomePage> {
               label: Text('Add Expense'),
             ),
             backgroundColor: Color(0xff202020),
-            body: () {
-              {
-                if (expenseData.isDataLoaded) {
-                  return Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(25.w, 15.h, 0, 0),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            "Your Spends",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 18.sp),
+            body: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(25.w, 15.h, 0, 0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Your Spends",
+                      style: TextStyle(color: Colors.white, fontSize: 18.sp),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(23.w, 15.h, 21.w, 0),
+                  width: double.infinity,
+                  height: 377.h,
+                  padding: EdgeInsets.fromLTRB(25.w, 15.h, 25.w, 0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Color(0xff262626)),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      children: [
+                        Row(children: [
+                          Text(expenseData.totalExpense.toString(),
+                              style: TextStyle(
+                                  color: double.parse(budget) <
+                                          expenseData.totalExpense
+                                      ? Colors.red
+                                      : Colors.white,
+                                  fontSize: 22.sp,
+                                  fontWeight: FontWeight.bold)),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 5.h, 0, 0),
+                            child: Text("/ " + budget,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12.sp)),
                           ),
+                          IconButton(
+                              onPressed: () {
+                                _showModalBottomSheet();
+                              },
+                              icon: Icon(
+                                Icons.create,
+                                color: Colors.red,
+                              )),
+                        ]),
+                        SizedBox(
+                          height: 22.h,
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(23.w, 15.h, 21.w, 0),
-                        width: double.infinity,
-                        height: 377.h,
-                        padding: EdgeInsets.fromLTRB(25.w, 15.h, 25.w, 0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Color(0xff262626)),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Column(
-                            children: [
-                              Row(children: [
-                                Text(expenseData.totalExpense.toString(),
-                                    style: TextStyle(
-                                        color: double.parse(budget) <
-                                                expenseData.totalExpense
-                                            ? Colors.red
-                                            : Colors.white,
-                                        fontSize: 22.sp,
-                                        fontWeight: FontWeight.bold)),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 5.h, 0, 0),
-                                  child: Text("/ " + budget,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12.sp)),
+                        Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Color(0xff3A3A3A)),
+                            height: 228.h,
+                            width: double.infinity,
+                            child: PieChart(
+                              dataMap: expenseData.dataMap,
+
+                              animationDuration: Duration(milliseconds: 800),
+
+                              chartLegendSpacing: 32,
+
+                              chartRadius:
+                                  MediaQuery.of(context).size.width / 3.2,
+
+                              colorList: [
+                                Colors.yellow,
+                                Colors.red,
+                                Colors.orange,
+                                Colors.blue,
+                              ],
+
+                              initialAngleInDegree: 0,
+
+                              chartType: ChartType.ring,
+
+                              ringStrokeWidth: 32,
+
+                              centerText: "Expense",
+
+                              legendOptions: LegendOptions(
+                                showLegendsInRow: false,
+                                legendPosition: LegendPosition.right,
+                                showLegends: true,
+                                legendShape: BoxShape.circle,
+                                legendTextStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      _showModalBottomSheet();
-                                    },
-                                    icon: Icon(
-                                      Icons.create,
-                                      color: Colors.red,
-                                    )),
-                              ]),
-                              SizedBox(
-                                height: 22.h,
                               ),
-                              Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      color: Color(0xff3A3A3A)),
-                                  height: 228.h,
-                                  width: double.infinity,
-                                  child: PieChart(
-                                    dataMap: expenseData.dataMap,
 
-                                    animationDuration:
-                                        Duration(milliseconds: 800),
-
-                                    chartLegendSpacing: 32,
-
-                                    chartRadius:
-                                        MediaQuery.of(context).size.width / 3.2,
-
-                                    colorList: [
-                                      Colors.yellow,
-                                      Colors.red,
-                                      Colors.orange,
-                                      Colors.blue,
-                                    ],
-
-                                    initialAngleInDegree: 0,
-
-                                    chartType: ChartType.ring,
-
-                                    ringStrokeWidth: 32,
-
-                                    centerText: "Expense",
-
-                                    legendOptions: LegendOptions(
-                                      showLegendsInRow: false,
-                                      legendPosition: LegendPosition.right,
-                                      showLegends: true,
-                                      legendShape: BoxShape.circle,
-                                      legendTextStyle: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-
-                                    chartValuesOptions: ChartValuesOptions(
-                                      showChartValueBackground: true,
-                                      showChartValues: true,
-                                      showChartValuesInPercentage: false,
-                                      showChartValuesOutside: false,
-                                      decimalPlaces: 1,
-                                    ),
-
-                                    // gradientList: ---To add gradient colors---
-
-                                    // emptyColorGradient: ---Empty Color gradient---
-                                  )),
-                              SizedBox(
-                                height: 22.h,
+                              chartValuesOptions: ChartValuesOptions(
+                                showChartValueBackground: true,
+                                showChartValues: true,
+                                showChartValuesInPercentage: false,
+                                showChartValuesOutside: false,
+                                decimalPlaces: 1,
                               ),
-                              TextButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.purple),
-                                ),
-                                onPressed: () {},
-                                child: Text("See Detailed Summary",
-                                    style: TextStyle(
-                                        fontSize: 18.sp, color: Colors.white)),
-                              ),
-                            ],
+
+                              // gradientList: ---To add gradient colors---
+
+                              // emptyColorGradient: ---Empty Color gradient---
+                            )),
+                        SizedBox(
+                          height: 22.h,
+                        ),
+                        TextButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.purple),
                           ),
+                          onPressed: () {
+                            seedetailedSummary();
+                          },
+                          child: Text("See Detailed Summary",
+                              style: TextStyle(
+                                  fontSize: 18.sp, color: Colors.white)),
                         ),
-                      ),
-                    ],
-                  );
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              }
-            }(),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
             bottomNavigationBar: Container(
               height: 80,
               decoration: BoxDecoration(
@@ -224,6 +217,7 @@ class _HomePageState extends State<HomePage> {
                             splitColor = Colors.purple;
                             profileColor = Colors.white;
                             setState(() {});
+                            Navigator.pushNamed(context, splitexpenseScreenID);
                           },
                           icon: Icon(
                             Icons.group,
