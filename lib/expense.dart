@@ -7,12 +7,14 @@ class Expense {
     required this.category,
     required this.expense,
     required this.friends,
+    required this.paid,
   });
   int expenseID;
   int category;
   String expenseName;
   int expense;
   int friends;
+  String paid;
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> expenseAsMap = {
@@ -21,6 +23,7 @@ class Expense {
       "category": category,
       "expenses": expense,
       "friends": friends,
+      "paid": paid,
     };
     return (expenseAsMap);
   }
@@ -32,7 +35,8 @@ class Expense {
         expenseID: expenseAsMap["expenseID"],
         category: expenseAsMap["category"],
         expense: expenseAsMap["expenses"],
-        friends: expenseAsMap["friends"]);
+        friends: expenseAsMap["friends"],
+        paid: expenseAsMap["paid"]);
     return (expense);
   }
 }

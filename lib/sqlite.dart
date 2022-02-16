@@ -18,7 +18,8 @@ class SqliteDB {
         'expenseName TEXT, '
         'category INTEGER, '
         'expenses INTEGER,'
-        'friends INTEGER)');
+        'friends INTEGER,'
+        'paid TEXT)');
   }
 
   /// Initialize DB

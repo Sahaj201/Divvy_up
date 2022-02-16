@@ -13,6 +13,7 @@ class SplitScreen extends StatefulWidget {
 
 class _SplitScreenState extends State<SplitScreen> {
   String selectedValue = "1";
+  String selectedpaidValue = "1";
   bool foodvisibility = true;
   bool foodvisibility2 = false;
   bool shoppingvisibility = true;
@@ -27,10 +28,14 @@ class _SplitScreenState extends State<SplitScreen> {
     category: 0,
     expense: 0,
     friends: 0,
+    paid: "1",
   );
   void saveExpense() async {
     if (selectedValue != "2") {
       expense.expense = (expense.expense ~/ expense.friends);
+    }
+    if (selectedpaidValue == "2") {
+      expense.paid = "2";
     }
     Provider.of<ExpenseData>(context, listen: false).addExpense(expense);
     Navigator.pop(context);
@@ -391,7 +396,34 @@ class _SplitScreenState extends State<SplitScreen> {
               ),
             ),
             SizedBox(
-              height: 50.h,
+              height: 10.h,
+            ),
+            Center(
+                child: SizedBox(
+                    height: 42.h,
+                    width: 132.w,
+                    child: DropdownButton(
+                      elevation: 0,
+                      dropdownColor: Color(0xff3A3A3A),
+                      style: TextStyle(color: Colors.white, fontSize: 18.sp),
+                      value: selectedpaidValue,
+                      items: [
+                        DropdownMenuItem(
+                          child: Text("Paid by you"),
+                          value: "1",
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Paid by other"),
+                          value: "2",
+                        ),
+                      ],
+                      onChanged: (String? value) {
+                        selectedpaidValue = value!;
+                        setState(() {});
+                      },
+                    ))),
+            SizedBox(
+              height: 20.h,
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(0, 0, 42.w, 0),

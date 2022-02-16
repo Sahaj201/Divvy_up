@@ -31,6 +31,7 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
     category: 0,
     expense: 0,
     friends: 0,
+    paid: "1",
   );
   void saveExpense() async {
     Provider.of<ExpenseData>(context, listen: false).addExpense(expense);

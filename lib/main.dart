@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:divvyup/expense_data.dart';
 import 'package:divvyup/screens/homepage.dart';
 import 'package:divvyup/screens/new_expense_screen.dart';
+import 'package:divvyup/screens/seedetailedSummary.dart';
 import 'package:divvyup/screens/signup.dart';
 import 'package:divvyup/screens/splitscreen.dart';
 import 'package:divvyup/sqlite.dart';
@@ -63,6 +64,8 @@ class MyApp extends StatelessWidget {
                     if (pageName == splitexpenseScreenID)
                       return MaterialPageRoute(
                           builder: (context) => SplitScreen());
+                    if (pageName == seedetailedSummaryID)
+                      return MaterialPageRoute(builder: (context) => Summary());
                   },
                 )));
   }

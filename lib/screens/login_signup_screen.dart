@@ -1,7 +1,11 @@
 import 'package:divvyup/screens/routing.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'homepage.dart';
 
 class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({Key? key}) : super(key: key);
@@ -11,9 +15,38 @@ class LoginSignupScreen extends StatefulWidget {
 }
 
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
+  String useremail = "";
+  String userpass = "";
+  void checkcredentials() async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: useremail,
+        password: userpass,
+      );
+      Navigator.pushReplacement(
+          context,
+          new MaterialPageRoute(
+              builder: (BuildContext context) => new HomePage()));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(
+          msg: 'No user found for that email.',
+        );
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(
+          msg: 'Wrong password provided for that user.',
+        );
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Container(color: Colors.purple),
@@ -49,7 +82,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, homeScreenID);
+                      _showModalBottomSheet();
                     },
                     style: ButtonStyle(
                         backgroundColor:
@@ -97,6 +130,101 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  _showModalBottomSheet() {
+    showModalBottomSheet(
+      backgroundColor: Color(0xff202020),
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return SingleChildScrollView(
+            child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Container(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Column(
+                    children: [
+                      Center(
+                          child: Text("Login",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 30.sp))),
+                      SizedBox(height: 30.h),
+                      Container(
+                        child: TextField(
+                            onChanged: (value) {
+                              useremail = value;
+                            },
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  borderSide:
+                                      BorderSide(color: Colors.white, width: 0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  borderSide:
+                                      BorderSide(color: Colors.white, width: 0),
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16.w, vertical: 14.h),
+                                filled: true,
+                                fillColor: Colors.white,
+                                hintText: "email",
+                                hintStyle: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black))),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Container(
+                        child: TextField(
+                            onChanged: (value) {
+                              userpass = value;
+                            },
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  borderSide:
+                                      BorderSide(color: Colors.white, width: 0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  borderSide:
+                                      BorderSide(color: Colors.white, width: 0),
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16.w, vertical: 14.h),
+                                filled: true,
+                                fillColor: Colors.white,
+                                hintText: "Password",
+                                hintStyle: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black))),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Container(
+                          color: Colors.purple,
+                          width: double.infinity,
+                          child: TextButton(
+                              onPressed: () {
+                                checkcredentials();
+                              },
+                              child: Text(
+                                "Login",
+                                style: TextStyle(color: Colors.white),
+                              )))
+                    ],
+                  ),
+                )));
+      },
     );
   }
 }
