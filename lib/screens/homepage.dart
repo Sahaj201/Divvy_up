@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divvyup/expense_data.dart';
 import 'package:divvyup/screens/routing.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
+import 'package:divvyup/user.dart';
 
+import '../expense.dart';
 import '../sqlite.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,9 +24,32 @@ class _HomePageState extends State<HomePage> {
   Color splitColor = Colors.white;
   Color profileColor = Colors.white;
   double width = 20.w;
+  String uID = "";
+  String budget = "0";
+  String name = "";
 
   TextEditingController budgetholder = TextEditingController();
-  String budget = "0";
+  void fetchuseruId() async {
+    final currentuser = FirebaseAuth.instance.currentUser;
+    uID = (currentuser!.uid).toString();
+    var doc = await FirebaseFirestore.instance.collection(uID);
+    var querysnap = await doc.get();
+
+    for (var qu in querysnap.docs) {
+      if (qu == uID) {
+        var x = newUser.fromMap(qu.data());
+        budget = x.budget;
+        name = x.userName;
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchuseruId();
+  }
+
   void seedetailedSummary() {
     Navigator.pushNamed(context, seedetailedSummaryID);
   }
@@ -34,7 +61,7 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.purple,
-              title: Text("Hello"),
+              title: Text("Hello," + name),
               automaticallyImplyLeading: false,
               leading: IconButton(
                   onPressed: () {}, icon: Icon(Icons.account_circle)),
@@ -321,7 +348,11 @@ class _HomePageState extends State<HomePage> {
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
                                         Colors.purple)),
-                            onPressed: () {
+                            onPressed: () async {
+                              var f = await FirebaseFirestore.instance
+                                  .collection("Users")
+                                  .doc(uID)
+                                  .update({"budget": budget});
                               setState(() {});
                               Navigator.pop(context);
                             },

@@ -183,6 +183,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       ),
                       Container(
                         child: TextField(
+                            obscureText: true,
                             onChanged: (value) {
                               userpass = value;
                             },

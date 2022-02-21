@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:divvyup/user.dart';
+import 'package:provider/provider.dart';
 
+import '../expense_data.dart';
 import 'homepage.dart';
 
 class Signup extends StatefulWidget {
@@ -16,23 +20,38 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   bool buttonvisibility = true;
   bool progressbarvisibility = false;
-  String email = "";
-  String pass = "";
   String confirmpass = "";
-  String name = "";
+  newUser newuser =
+      newUser(userName: "", email: '', uID: "", password: "", budget: "0");
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  void addingUserdetails(UserCredential user) async {
+    final currentuser = await FirebaseAuth.instance.currentUser;
+    newuser.uID = (currentuser!.uid).toString();
+    print(newuser.uID);
+    Provider.of<ExpenseData>(context, listen: false).addExpense(newuser);
+  }
+
   void createaccount() async {
-    if (name != null) {
-      if (pass == confirmpass) {
-        print("enter");
+    if (newuser.userName != null) {
+      if (newuser.password == confirmpass) {
         try {
+          print("enter");
           final user = await FirebaseAuth.instance
-              .createUserWithEmailAndPassword(email: email, password: pass);
+              .createUserWithEmailAndPassword(
+                  email: newuser.email, password: newuser.password);
           if (user != null) {
-            Navigator.pushReplacement(
-                context,
-                new MaterialPageRoute(
-                    builder: (BuildContext context) => new HomePage()));
+            print("enter1st");
+            print(user);
+            final currentuser = await FirebaseAuth.instance.currentUser;
+            newuser.uID = (currentuser!.uid).toString();
+            var newuserAsMap = await newuser.toMap();
+            var f = await FirebaseFirestore.instance
+                .collection('Users')
+                .doc(newuser.uID)
+                .set(newuserAsMap);
+            Navigator.pushNamedAndRemoveUntil(
+                context, homeScreenID, (route) => false);
             Fluttertoast.showToast(
               msg: "Signed Up Successfully",
             );
@@ -115,7 +134,7 @@ class _SignupState extends State<Signup> {
                       ),
                       TextField(
                           onChanged: (value) {
-                            name = value;
+                            newuser.userName = value;
                           },
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -142,7 +161,7 @@ class _SignupState extends State<Signup> {
                       ),
                       TextField(
                           onChanged: (value) {
-                            email = value;
+                            newuser.email = value;
                           },
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -170,7 +189,7 @@ class _SignupState extends State<Signup> {
                       TextField(
                           obscureText: true,
                           onChanged: (value) {
-                            pass = value;
+                            newuser.password = value;
                           },
                           decoration: InputDecoration(
                               border: OutlineInputBorder(

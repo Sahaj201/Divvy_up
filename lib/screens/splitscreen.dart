@@ -23,7 +23,6 @@ class _SplitScreenState extends State<SplitScreen> {
   bool othersvisibility = true;
   bool othersvisibility2 = false;
   Expense expense = Expense(
-    expenseID: -1,
     expenseName: " ",
     category: 0,
     expense: 0,
@@ -32,7 +31,10 @@ class _SplitScreenState extends State<SplitScreen> {
   );
   void saveExpense() async {
     if (selectedValue != "2") {
+      var x = expense.expense ~/ expense.friends;
+      print(x);
       expense.expense = (expense.expense ~/ expense.friends);
+      print(expense.expense);
     }
     if (selectedpaidValue == "2") {
       expense.paid = "2";
@@ -326,6 +328,9 @@ class _SplitScreenState extends State<SplitScreen> {
                       },
                     ))
               ],
+            ),
+            SizedBox(
+              height: 10.h,
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(0, 0, 42.w, 0),

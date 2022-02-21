@@ -17,7 +17,6 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await SqliteDB.initDb();
   runApp(MaterialApp(home: MyApp()));
 }
 

@@ -26,7 +26,6 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
   bool othersvisibility = true;
   bool othersvisibility2 = false;
   Expense expense = Expense(
-    expenseID: -1,
     expenseName: " ",
     category: 0,
     expense: 0,

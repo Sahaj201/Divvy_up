@@ -2,9 +2,7 @@ import 'package:divvyup/expense_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:divvyup/expense_data.dart';
 import 'package:provider/provider.dart';
-import '../expense.dart';
 
 class Summary extends StatefulWidget {
   const Summary({Key? key}) : super(key: key);
@@ -16,17 +14,126 @@ class Summary extends StatefulWidget {
 class _SummaryState extends State<Summary> {
   List<Widget> summry = [];
   List<dynamic> exp = [];
+  double moneyyouget = 0;
+  double moneyyoupay = 0;
   List<Widget> summaryview() {
     List<Widget> seesummary = [];
-    print(exp);
+
     for (var i in exp) {
-      print(i.expenseName);
-      seesummary.add(Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [Text(i.expenseName), Text(i.expense.toString())],
-        )
-      ]));
+      bool friendsVisibility = false;
+      if (i.paid == "1" && i.friends != 0) {
+        friendsVisibility = true;
+        print(i.expense);
+        moneyyouget += i.expense * (i.friends - 1);
+      } else if (i.paid == "2") {
+        friendsVisibility = true;
+        moneyyoupay = moneyyoupay + (i.expense);
+      }
+      String cat = "";
+      if (i.category == 1) {
+        cat = "Food";
+      } else if (i.category == 2) {
+        cat = "Shopping";
+      } else if (i.category == 3) {
+        cat = "Bills";
+      } else {
+        cat = "Others";
+      }
+      seesummary.add(Container(
+        margin: EdgeInsets.all(15.h),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Color(0xff262626),
+        ),
+        child: Column(children: [
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: 10.w,
+              ),
+              Text(i.expenseName,
+                  style: TextStyle(color: Colors.white, fontSize: 20.sp)),
+              Expanded(
+                flex: 3,
+                child: SizedBox(),
+              ),
+              Text("Rs " + i.expense.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 20.sp)),
+              SizedBox(
+                width: 10.w,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: 10.w,
+              ),
+              Text("Category:",
+                  style: TextStyle(color: Colors.purple, fontSize: 20.sp)),
+              Expanded(
+                flex: 3,
+                child: SizedBox(),
+              ),
+              Text(cat, style: TextStyle(color: Colors.white, fontSize: 20.sp)),
+              SizedBox(
+                width: 10.w,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: 10.w,
+              ),
+              Text("Paid By:",
+                  style: TextStyle(color: Colors.purple, fontSize: 20.sp)),
+              Expanded(
+                flex: 3,
+                child: SizedBox(),
+              ),
+              Text(i.paid == "1" ? "Me" : "Friends",
+                  style: TextStyle(color: Colors.white, fontSize: 20.sp)),
+              SizedBox(
+                width: 10.w,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          Visibility(
+            visible: friendsVisibility,
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 10.w,
+                ),
+                Text("Number of Splits:",
+                    style: TextStyle(color: Colors.purple, fontSize: 20.sp)),
+                Expanded(
+                  flex: 3,
+                  child: SizedBox(),
+                ),
+                Text(i.friends.toString(),
+                    style: TextStyle(color: Colors.white, fontSize: 20.sp)),
+                SizedBox(
+                  width: 10.w,
+                ),
+              ],
+            ),
+          )
+        ]),
+      ));
     }
     return seesummary;
   }
@@ -43,86 +150,95 @@ class _SummaryState extends State<Summary> {
             {
               exp = expenseData.allExpense;
               summry = summaryview();
-              return Padding(
-                  padding: EdgeInsets.fromLTRB(35.w, 0, 35.w, 0),
-                  child: Column(children: [
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              return SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Color(0xff262626),
-                          ),
-                          width: 136.w,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 10.h,
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: Color(0xff262626),
                               ),
-                              Text(" You'll Get",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20.sp)),
-                              SizedBox(
-                                height: 10.h,
+                              width: 136.w,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(" You'll Get",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.sp)),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(
+                                    "Rs " + moneyyouget.toString(),
+                                    style: TextStyle(
+                                        color: Colors.green, fontSize: 20.sp),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "Rs 9555",
-                                style: TextStyle(
-                                    color: Colors.green, fontSize: 20.sp),
+                            ),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: Color(0xff262626),
                               ),
-                              SizedBox(
-                                height: 10.h,
+                              width: 136.w,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(" You'll pay",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.sp)),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                  Text(
+                                    "Rs " + moneyyoupay.toString(),
+                                    style: TextStyle(
+                                        color: Colors.red, fontSize: 20.sp),
+                                  ),
+                                  SizedBox(
+                                    height: 10.h,
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
                         SizedBox(
-                          width: 10.w,
+                          height: 20.h,
+                        ),
+                        Center(
+                          child: Text("All Expenses",
+                              style: TextStyle(
+                                  fontSize: 20.sp, color: Colors.purple)),
                         ),
                         Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Color(0xff262626),
-                          ),
-                          width: 136.w,
                           child: Column(
-                            children: [
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Text(" You'll pay",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20.sp)),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Text(
-                                "Rs 9555",
-                                style: TextStyle(
-                                    color: Colors.red, fontSize: 20.sp),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                            ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: summry,
                           ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Center(
-                      child: Text("All Expenses",
-                          style:
-                              TextStyle(fontSize: 20.sp, color: Colors.purple)),
-                    ),
-                    Column(children: summry)
-                  ]));
+                        ),
+                      ]));
             }
           }());
     });
